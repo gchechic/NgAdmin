@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <a class="ng-title-icon" href="http://angular.io" target="_blank">
+      <i></i>
+    </a>
+    <span class="title">NG Admin</span>
+    <span>
+      <a mat-button routerLink='/home' routerLinkActive="router-link-active">
+        <span>Home</span>
+      </a>
+      <a mat-button routerLink='/users' routerLinkActive="router-link-active">
+        <span>Usuarios</span>
+      </a>
+    </span>
+    <!-- This fills the remaining space of the current row -->
+    <span class="example-fill-remaining-space"></span>
+
+    <a mat-button routerLink='/login' routerLinkActive="router-link-active">
+      <span>Login</span>
+    </a>
+    <!-- <a href="http://twitter.com/john_papa" target="_blank" class="avatar avatar-2" title="John Papa">
+        <i></i>
+      </a> -->
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,10 @@
+<h3>Users</h3>
+<!-- <mat-list role="list" *ngIf="users?.length">
+    <mat-list-item role="listitem" *ngFor="let user of users">
+      {{user.UserName}}
+    </mat-list-item>
+  </mat-list> -->
+<mat-nav-list role="list" *ngIf="users?.length">
+  <a mat-list-item [routerLink]="[user.UserName, 'edit']" *ngFor="let user of users">{{user.userName}} </a>
+</mat-nav-list>
+<router-outlet></router-outlet>
