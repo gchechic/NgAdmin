@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable,throwError } from 'rxjs';
+import { map, tap, catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 import { ConfigServiceService } from '../core/config.service';
 
@@ -41,8 +41,20 @@ export class LoginService {
             return true;
           }
           return false;
-        })
+        }),
+        catchError((err: HttpErrorResponse) => {
+          console.log(err);
+          if (err.status === 400) {
+            return throwError('Usuario o Clave Incorrectos.');
+          } else {
+            return throwError('Ha ocurrido un error inesperado.');
+          }
+
+        
+
       );
+
+
     // .catch(this.handleLoginError);
   }
 

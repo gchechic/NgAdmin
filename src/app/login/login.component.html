@@ -1,25 +1,30 @@
 <mat-card>
     <mat-card-header>
-        <mat-card-title>Login</mat-card-title>
+        <mat-card-title>
+            <h2>Login</h2>
+        </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form>
+        <form #loginForm="ngForm">
             <p>
                 <mat-icon matPrefix class="app-input-icon">person</mat-icon>
                 <mat-form-field>
-                    <input matInput placeholder="Usuario" [(ngModel)]="username" name="username" required>
+                    <input matInput placeholder="Usuario" [(ngModel)]="username" name="username" id="username" required />
                 </mat-form-field>
             </p>
             <p>
                 <mat-icon matPrefix class="app-input-icon">vpn_key</mat-icon>
                 <mat-form-field>
-                    <input matInput placeholder="Password" [(ngModel)]="password" type="password" name="password" required>
+                    <input matInput placeholder="Password" [(ngModel)]="password" type="password" id="password" name="password" required>
                 </mat-form-field>
             </p>
         </form>
+        <div *ngIf="errorMsg">
+            <mat-error>{{errorMsg}}</mat-error>
+        </div>
         <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button (click)="login()" color="primary">Login</button>
+        <button mat-raised-button (click)="login()" color="primary" [disabled]="!loginForm.form.valid">Login</button>
     </mat-card-actions>
 </mat-card>
