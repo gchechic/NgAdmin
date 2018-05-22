@@ -3,24 +3,19 @@
         <mat-card-title>Login</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form class="example-form">
-            <table cellspacing="0">
-                <tr>
-                    <td>
-                        <mat-form-field>
-                            <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
-                        </mat-form-field>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-icon>account_circle</mat-icon>
-                        <mat-form-field>
-                            <input matInput placeholder="Password" [(ngModel)]="password" type="password" name="password" required>
-                        </mat-form-field>
-                    </td>
-                </tr>
-            </table>
+        <form>
+            <p>
+                <mat-icon matPrefix class="app-input-icon">person</mat-icon>
+                <mat-form-field>
+                    <input matInput placeholder="Usuario" [(ngModel)]="username" name="username" required>
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-icon matPrefix class="app-input-icon">vpn_key</mat-icon>
+                <mat-form-field>
+                    <input matInput placeholder="Password" [(ngModel)]="password" type="password" name="password" required>
+                </mat-form-field>
+            </p>
         </form>
         <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
     </mat-card-content>
