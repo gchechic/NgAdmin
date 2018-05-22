@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable,throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse
+} from '@angular/common/http';
 
 import { ConfigServiceService } from '../core/config.service';
 
@@ -49,13 +53,8 @@ export class LoginService {
           } else {
             return throwError('Ha ocurrido un error inesperado.');
           }
-
-        
-
+        })
       );
-
-
-    // .catch(this.handleLoginError);
   }
 
   // private handleLoginError(error: HttpErrorResponse | any) {
