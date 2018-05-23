@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { map, tap, catchError } from 'rxjs/operators';
+import { map, tap, catchError, shareReplay } from 'rxjs/operators';
 import {
   HttpClient,
   HttpHeaders,
   HttpErrorResponse
 } from '@angular/common/http';
+import * as moment from 'moment';
 
 import { ConfigServiceService } from '../core/config.service';
 
 @Injectable()
 export class AuthService {
-  private authtoken;
+  // private authtoken;
   get token(): string {
-    return this.authtoken;
+    return localStorage.getItem('access_token');
   }
 
   constructor(
@@ -28,8 +29,8 @@ export class AuthService {
   //   });
   // }
 
-  login(usr: string, pwd: string): Observable<boolean> {
-    this.authtoken = null; // borrar el token actual
+  login(usr: string, pwd: string) {
+    this.clearSession(); // borrar el token actual
     const creds = `grant_type=password&username=${usr}&password=${pwd}`;
     const headers = new HttpHeaders().set(
       'Content-Type',
@@ -39,17 +40,13 @@ export class AuthService {
     return this.http
       .post(`${this.configServiceService.urlServer}/token`, creds, {
         headers: headers,
-        responseType: 'text'
+        responseType: 'json'
       })
       .pipe(
-        map(resp => {
-          // this.saveJwt(resp);
-          if (resp && JSON.parse(resp)['access_token']) {
-            this.authtoken = JSON.parse(resp)['access_token'];
-            return true;
-          }
-          return false;
+        tap(resp => {
+          this.setSession(resp);
         }),
+        shareReplay(),
         catchError((err: HttpErrorResponse) => {
           console.log(err);
           if (err.status === 400) {
@@ -64,46 +61,30 @@ export class AuthService {
   // private handleLoginError(error: HttpErrorResponse | any) {
   //   return Observable.throw(error);
   // }
+  private setSession(authResult) {
+    // console.log(authResult.access_token, authResult.expiresIn);
+    const expiresAt = moment().add(authResult.expiresIn, 'second');
 
-  // saveJwt(jwt) {
-  //   const json = jwt !== '' ? JSON.parse(jwt) : undefined;
-  //   this._token = jwt !== '' ? json.access_token : '';
-  //   // this._tokenrodi = jwt !== '' ? json.tokenRodi : '';
-  //   this._userName = jwt !== '' ? json.userName : '';
-  //   sessionStorage.setItem('user', this._userName);
+    localStorage.setItem('access_token', authResult.access_token);
+    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+  }
 
-  //   if (jwt !== '') {
-  //     const account: any = {
-  //       token: json.access_token,
-  //       tokenrodi: json.tokenRodi,
-  //       user: json.userName
-  //     };
-  //     localStorage.setItem('account', JSON.stringify(account));
-  //     // Cookie.set('BearerToken', this._token, 10  , '/' , 'sba.com.ar') ;
-  //     // console.log(account);
-  //     Cookie.set(
-  //       'BearerToken',
-  //       this._token,
-  //       10,
-  //       '/',
-  //       this.configService.domain
-  //     );
-  //     // Cookie.set('BearerToken', this._token, 10  , '/', '') ;
-  //   } else {
-  //     localStorage.clear();
-  //     // Cookie.delete('BearerToken', '/' , this.configService.domain) ;
-  //   }
-  // }
-  // public borrarCookieSignalR() {
-  //   // console.log('borrarCookieSignalR');
-  //   Cookie.delete('BearerToken', '/', this.configService.domain);
-  // }
+  private clearSession() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('expires_at');
+  }
 
-  // public HandleError(error: any) {
-  //   if (error.status === 403) {
-  //     this._router.navigate(['/Forbidden']);
-  //   } else if (error.status === 401) {
-  //     this._router.navigate(['/Unauthorized']);
-  //   }
-  // }
+  public isLoggedIn() {
+    return moment().isBefore(this.getExpiration());
+  }
+
+  isLoggedOut() {
+    return !this.isLoggedIn();
+  }
+
+  private getExpiration() {
+    const expiration = localStorage.getItem('expires_at');
+    const expiresAt = JSON.parse(expiration);
+    return moment(expiresAt);
+  }
 }

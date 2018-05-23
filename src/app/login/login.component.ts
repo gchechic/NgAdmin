@@ -9,6 +9,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'adm-login',
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewChecked {
   private subscrs: Subscription;
   @ViewChild('loginForm') currentForm: NgForm;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.username = null;
@@ -62,12 +63,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewChecked {
         })
       )
       .subscribe(
-        resp => console.log(resp),
+        null,
         errorMsg => {
           this.errorMsg = errorMsg;
         },
         () => {
-          console.log('fin?');
+          console.log('User is logged in');
+          this.router.navigateByUrl('/');
         }
       );
   }
