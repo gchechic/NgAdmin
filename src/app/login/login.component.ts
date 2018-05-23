@@ -6,8 +6,9 @@ import {
   AfterViewChecked
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { LoginService } from './login.service';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'adm-login',
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewChecked {
   private subscrs: Subscription;
   @ViewChild('loginForm') currentForm: NgForm;
 
-  constructor(private loginService: LoginService) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.username = null;
@@ -53,16 +54,21 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   login() {
     this.showSpinner = true;
-    this.loginService.login(this.username, this.password).subscribe(
-      resp => console.log(resp),
-      errorMsg => {
-        this.errorMsg = errorMsg;
-        this.showSpinner = false;
-      },
-      () => {
-        console.log('fin?');
-        this.showSpinner = false;
-      }
-    );
+    this.authService
+      .login(this.username, this.password)
+      .pipe(
+        finalize(() => {
+          this.showSpinner = false;
+        })
+      )
+      .subscribe(
+        resp => console.log(resp),
+        errorMsg => {
+          this.errorMsg = errorMsg;
+        },
+        () => {
+          console.log('fin?');
+        }
+      );
   }
 }

@@ -10,22 +10,26 @@ import {
 import { ConfigServiceService } from '../core/config.service';
 
 @Injectable()
-export class LoginService {
+export class AuthService {
   private authtoken;
+  get token(): string {
+    return this.authtoken;
+  }
 
   constructor(
     private http: HttpClient,
     private configServiceService: ConfigServiceService
   ) {}
 
-  AutHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${this.authtoken}`
-    });
-  }
+  // AutHeaders(): HttpHeaders {
+  //   return new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     Authorization: `Bearer ${this.authtoken}`
+  //   });
+  // }
 
   login(usr: string, pwd: string): Observable<boolean> {
+    this.authtoken = null; // borrar el token actual
     const creds = `grant_type=password&username=${usr}&password=${pwd}`;
     const headers = new HttpHeaders().set(
       'Content-Type',

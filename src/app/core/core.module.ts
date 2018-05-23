@@ -5,8 +5,10 @@ import { RouterModule } from '@angular/router';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SharedModule } from '../shared/shared.module';
 import { ToastService } from './toast.service';
-import { LoginService } from '../login/login.service';
 import { ConfigServiceService } from './config.service';
+import { AuthInterceptor } from './auth-interceptor';
+import { AuthService } from './auth.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -16,7 +18,17 @@ import { ConfigServiceService } from './config.service';
   ],
   declarations: [ToolbarComponent],
   exports: [ToolbarComponent],
-  providers: [ToastService, LoginService, ConfigServiceService]
+  providers: [
+    ToastService,
+    ConfigServiceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    ,
+    AuthService
+  ]
 })
 export class CoreModule {
   constructor(
