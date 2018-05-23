@@ -26,7 +26,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       useClass: AuthInterceptor,
       multi: true
     },
-    ,
     AuthService
   ]
 })
