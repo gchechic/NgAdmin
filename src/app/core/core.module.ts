@@ -18,4 +18,16 @@ import { ConfigServiceService } from './config.service';
   exports: [ToolbarComponent],
   providers: [ToastService, LoginService, ConfigServiceService]
 })
-export class CoreModule {}
+export class CoreModule {
+  constructor(
+    @Optional()
+    @SkipSelf()
+    parentModule: CoreModule
+  ) {
+    if (parentModule) {
+      throw new Error(
+        'CoreModule is already loaded. Import it in the AppModule only'
+      );
+    }
+  }
+}

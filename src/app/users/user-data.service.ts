@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { User } from './user';
+
+import { User } from '../models';
 import { ConfigServiceService } from '../core/config.service';
 import { LoginService } from '../login/login.service';
 
