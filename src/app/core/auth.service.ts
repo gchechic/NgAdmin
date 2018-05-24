@@ -22,8 +22,13 @@ export class AuthService {
     this.storage = localStorage;
   }
 
+  /// esta propiedad es usada por el http interceptor
   get token(): string {
     return this.storage.getItem('access_token');
+  }
+
+  get user(): string {
+    return this.storage.getItem('user');
   }
 
   login(usr: string, pwd: string) {
@@ -55,20 +60,24 @@ export class AuthService {
       );
   }
 
-  // private handleLoginError(error: HttpErrorResponse | any) {
-  //   return Observable.throw(error);
-  // }
-  private setSession(authResult) {
-    // console.log(authResult.access_token, authResult.expiresIn);
-    const expiresAt = moment().add(authResult.expiresIn, 'second');
+  logout() {
+    // TODO: ver si hay que ejecutar algo en el server
+    this.clearSession();
+  }
 
+  private setSession(authResult) {
+    console.log(authResult.expires_in);
+    const expiresAt = moment().add(authResult.expires_in, 'second');
+    console.log(expiresAt);
     this.storage.setItem('access_token', authResult.access_token);
     this.storage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+    this.storage.setItem('user', authResult.usrName);
   }
 
   private clearSession() {
     this.storage.removeItem('access_token');
     this.storage.removeItem('expires_at');
+    this.storage.removeItem('user');
   }
 
   public isLoggedIn() {

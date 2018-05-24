@@ -9,6 +9,7 @@ import { ConfigServiceService } from './config.service';
 import { AuthInterceptor } from './auth-interceptor';
 import { AuthService } from './auth.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthGuard } from './guards';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       useClass: AuthInterceptor,
       multi: true
     },
-    AuthService
+    AuthService,
+    AuthGuard
   ]
 })
 export class CoreModule {
