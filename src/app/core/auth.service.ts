@@ -13,21 +13,18 @@ import { ConfigServiceService } from '../core/config.service';
 @Injectable()
 export class AuthService {
   // private authtoken;
-  get token(): string {
-    return localStorage.getItem('access_token');
-  }
+  private storage: Storage;
 
   constructor(
     private http: HttpClient,
     private configServiceService: ConfigServiceService
-  ) {}
+  ) {
+    this.storage = localStorage;
+  }
 
-  // AutHeaders(): HttpHeaders {
-  //   return new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     Authorization: `Bearer ${this.authtoken}`
-  //   });
-  // }
+  get token(): string {
+    return this.storage.getItem('access_token');
+  }
 
   login(usr: string, pwd: string) {
     this.clearSession(); // borrar el token actual
@@ -65,13 +62,13 @@ export class AuthService {
     // console.log(authResult.access_token, authResult.expiresIn);
     const expiresAt = moment().add(authResult.expiresIn, 'second');
 
-    localStorage.setItem('access_token', authResult.access_token);
-    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+    this.storage.setItem('access_token', authResult.access_token);
+    this.storage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
   }
 
   private clearSession() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('expires_at');
+    this.storage.removeItem('access_token');
+    this.storage.removeItem('expires_at');
   }
 
   public isLoggedIn() {
@@ -83,7 +80,7 @@ export class AuthService {
   }
 
   private getExpiration() {
-    const expiration = localStorage.getItem('expires_at');
+    const expiration = this.storage.getItem('expires_at');
     const expiresAt = JSON.parse(expiration);
     return moment(expiresAt);
   }
