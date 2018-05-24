@@ -9,7 +9,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../core/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'adm-login',
@@ -21,16 +21,23 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewChecked {
   username: string;
   password: string;
   errorMsg: string;
+  private returnUrl: string;
 
   private loginForm: NgForm;
   private subscrs: Subscription;
   @ViewChild('loginForm') currentForm: NgForm;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.username = null;
     this.errorMsg = null;
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
   ngOnDestroy() {
     if (this.subscrs) {
@@ -68,8 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.errorMsg = errorMsg;
         },
         () => {
-          console.log('User is logged in');
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl(this.returnUrl);
         }
       );
   }

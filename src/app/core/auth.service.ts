@@ -50,7 +50,6 @@ export class AuthService {
         }),
         shareReplay(),
         catchError((err: HttpErrorResponse) => {
-          console.log(err);
           if (err.status === 400) {
             return throwError('Usuario o Clave Incorrectos.');
           } else {
@@ -66,9 +65,7 @@ export class AuthService {
   }
 
   private setSession(authResult) {
-    console.log(authResult.expires_in);
     const expiresAt = moment().add(authResult.expires_in, 'second');
-    console.log(expiresAt);
     this.storage.setItem('access_token', authResult.access_token);
     this.storage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
     this.storage.setItem('user', authResult.usrName);
