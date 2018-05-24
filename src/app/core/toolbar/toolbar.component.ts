@@ -14,7 +14,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subsc = this.authService.isLogged$.subscribe(resp => {
       this.isloged = resp;
-      console.log(resp);
     });
   }
   ngOnDestroy() {
