@@ -15,9 +15,13 @@
     <!-- This fills the remaining space of the current row -->
     <span class="example-fill-remaining-space"></span>
 
-    <a mat-button routerLink='/login' routerLinkActive="router-link-active">
-      <span>Login</span>
+    <a *ngIf="!isloged" mat-button routerLink='/login' routerLinkActive="router-link-active">
+      <span>Log in</span>
     </a>
+    <a *ngIf="isloged" mat-button (click)="logout()">
+      <span>Log out</span>
+    </a>
+
     <!-- <a href="http://twitter.com/john_papa" target="_blank" class="avatar avatar-2" title="John Papa">
         <i></i>
       </a> -->

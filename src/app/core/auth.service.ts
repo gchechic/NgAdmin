@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { map, tap, catchError, shareReplay } from 'rxjs/operators';
 import {
   HttpClient,
@@ -14,12 +14,19 @@ import { ConfigServiceService } from '../core/config.service';
 export class AuthService {
   // private authtoken;
   private storage: Storage;
+  private logger: BehaviorSubject<boolean>;
+  private islogged = false;
+
+  public isLogged$: Observable<boolean>;
 
   constructor(
     private http: HttpClient,
     private configServiceService: ConfigServiceService
   ) {
     this.storage = localStorage;
+    this.logger = new BehaviorSubject<boolean>(false);
+    this.isLogged$ = this.logger.asObservable();
+    this.isLoggedIn(); // ejecutar para que logger emita valor actual
   }
 
   /// esta propiedad es usada por el http interceptor
@@ -47,6 +54,7 @@ export class AuthService {
       .pipe(
         tap(resp => {
           this.setSession(resp);
+          this.logger.next(true);
         }),
         shareReplay(),
         catchError((err: HttpErrorResponse) => {
@@ -62,6 +70,7 @@ export class AuthService {
   logout() {
     // TODO: ver si hay que ejecutar algo en el server
     this.clearSession();
+    this.logger.next(false);
   }
 
   private setSession(authResult) {
@@ -78,7 +87,11 @@ export class AuthService {
   }
 
   public isLoggedIn() {
-    return moment().isBefore(this.getExpiration());
+    const bLogged = moment().isBefore(this.getExpiration());
+    if (this.logger.value !== bLogged) {
+      this.logger.next(bLogged);
+    }
+    return bLogged;
   }
 
   isLoggedOut() {
