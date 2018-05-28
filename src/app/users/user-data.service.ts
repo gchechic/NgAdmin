@@ -14,6 +14,11 @@ export class UserDataService {
   getUsers() {
     const url = `${this.configService.urlApi}/users`;
 
-    return this.httpClient.get<User[]>(url);
+    return this.httpClient.get<User[]>(url).pipe(
+      catchError(err => {
+        console.log(err);
+        return [];
+      })
+    );
   }
 }
