@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: 'app/users/users.module#UsersModule',
     canActivate: [AuthGuard]
   },
+  {
+    path: 'procesos',
+    loadChildren: 'app/procesos/procesos.module#ProcesosModule',
+    canActivate: [AuthGuard]
+  },
   { path: 'login', component: LoginComponent },
   { path: '**', pathMatch: 'full', component: PathNotFoundComponent }
 ];
