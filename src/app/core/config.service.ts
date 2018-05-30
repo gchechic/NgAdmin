@@ -10,7 +10,8 @@ export class ConfigServiceService {
   urlApi = `${this.urlServer}/api`;
   constructor() {
     if (!environment.production) {
-      this.urlServer = 'http://localhost:8589';
+      // this.urlServer = 'http://localhost:8589';
+      this.urlServer = 'https://adminng.azurewebsites.net';
       this.urlApi = `${this.urlServer}/api`;
     }
   }
