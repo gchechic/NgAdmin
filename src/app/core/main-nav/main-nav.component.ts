@@ -19,7 +19,8 @@ export class MainNavComponent {
     .observe(Breakpoints.Handset)
     .pipe(
       tap(result => (this.isHandset = result.matches)),
-      map(result => result.matches)
+      map(result => result.matches),
+      tap(result => console.log(result))
     );
   constructor(private breakpointObserver: BreakpointObserver) {}
 }

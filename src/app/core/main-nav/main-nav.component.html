@@ -1,0 +1,57 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$|async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'over'"
+    [opened]="!(isHandset$ | async)" (click)="isHandset? drawer.toggle():null" class="app-sidenav">
+    <!-- <mat-toolbar color="primary">Menu</mat-toolbar> -->
+
+    <mat-toolbar (click)="drawer.toggle()">
+      <mat-toolbar-row>
+        <span>Menu</span>
+      </mat-toolbar-row>
+
+      <mat-toolbar-row>
+        <a mat-raised-button class="app-sidebar-button" routerLink='/home' routerLinkActive="router-link-active">
+          <mat-icon class="example-icon">home</mat-icon>
+          <span>Home</span>
+        </a>
+      </mat-toolbar-row>
+
+      <mat-toolbar-row>
+        <a mat-raised-button class="app-sidebar-button" routerLink='/users' routerLinkActive="router-link-active">
+          <mat-icon class="example-icon">people</mat-icon>
+          <span> Usuarios</span>
+        </a>
+      </mat-toolbar-row>
+
+      <mat-toolbar-row>
+        <a mat-raised-button class="app-sidebar-button" routerLink='/procesos' routerLinkActive="router-link-active">
+          <mat-icon class="example-icon">apps</mat-icon>
+          Procesos
+        </a>
+      </mat-toolbar-row>
+
+      <!-- <mat-toolbar-row>
+        <span>Procesos</span>
+        <a mat-button routerLink='/procesos' routerLinkActive="router-link-active"></a>
+        <span class="app-toolbar-filler"></span>
+        <mat-icon>apps</mat-icon>
+      </mat-toolbar-row> -->
+
+      <mat-toolbar-row>
+        <a mat-raised-button color="secondary" class="app-sidebar-button" routerLink='/login'>
+          <mat-icon class="example-icon">verified_user</mat-icon>
+          Login
+        </a>
+      </mat-toolbar-row>
+
+
+    </mat-toolbar>
+  </mat-sidenav>
+
+  <adm-main-tb (toggleMenuClicked)="drawer.toggle()"></adm-main-tb>
+  <div class="app-content">
+    <!-- <mat-card> -->
+    <router-outlet></router-outlet>
+    <!-- </mat-card> -->
+  </div>
+
+</mat-sidenav-container>

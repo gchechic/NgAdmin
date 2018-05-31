@@ -13,14 +13,12 @@ import { CoreModule } from './core/core.module';
 import {
   MatToolbarModule,
   MatButtonModule,
-  MatSidenavModule,
   MatIconModule,
   MatListModule,
   MatCardModule
   // MatListModule
 } from '@angular/material';
 import { LoginComponent } from './login/login.component';
-import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { SharedModule } from './shared/shared.module';
 @NgModule({
@@ -28,8 +26,7 @@ import { SharedModule } from './shared/shared.module';
     AppComponent,
     HomeComponent,
     PathNotFoundComponent,
-    LoginComponent,
-    MainNavComponent
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +36,6 @@ import { SharedModule } from './shared/shared.module';
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,
-    MatSidenavModule,
     MatIconModule,
     MatListModule,
     CoreModule,

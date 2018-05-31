@@ -77,7 +77,7 @@ export class AuthService {
     const expiresAt = moment().add(authResult.expires_in, 'second');
     this.storage.setItem('access_token', authResult.access_token);
     this.storage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
-    this.storage.setItem('user', authResult.usrName);
+    this.storage.setItem('user', authResult.userName);
   }
 
   private clearSession() {

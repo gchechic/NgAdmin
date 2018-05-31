@@ -10,15 +10,19 @@ import { AuthInterceptor } from './auth-interceptor';
 import { AuthService } from './auth.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './guards';
+import { MainNavComponent } from './main-nav/main-nav.component';
+import { MatSidenavModule } from '@angular/material';
+import { MainTbComponent } from './main-tb/main-tb.component';
 
 @NgModule({
   imports: [
+    MatSidenavModule,
     CommonModule,
     SharedModule,
     RouterModule // because we use <router-outlet> and routerLink
   ],
-  declarations: [ToolbarComponent],
-  exports: [ToolbarComponent],
+  declarations: [MainNavComponent, ToolbarComponent, MainTbComponent],
+  exports: [MainNavComponent],
   providers: [
     ToastService,
     ConfigServiceService,

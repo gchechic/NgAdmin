@@ -1,3 +1,4 @@
+// No se esta usando. Es el otro modelo
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
