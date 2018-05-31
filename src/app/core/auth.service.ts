@@ -9,6 +9,7 @@ import {
 import * as moment from 'moment';
 
 import { ConfigServiceService } from '../core/config.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private configServiceService: ConfigServiceService
+    private configServiceService: ConfigServiceService,
+    private router: Router
   ) {
     this.storage = localStorage;
     this.logger = new BehaviorSubject<boolean>(false);
@@ -71,6 +73,7 @@ export class AuthService {
     // TODO: ver si hay que ejecutar algo en el server
     this.clearSession();
     this.logger.next(false);
+    this.router.navigate(['']);
   }
 
   private setSession(authResult) {
